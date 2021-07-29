@@ -11,11 +11,7 @@ func main() {
 	e := echo.New()
 	config.Init_DB()
 
-	routes.CategoryRoutes(e)
-	routes.ChartRoutes(e)
-	routes.TransactionDetail(e)
-	routes.Transaction(e)
-	routes.UserRoutes(e)
+	routes.New(e)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
