@@ -9,6 +9,13 @@ type Transaction struct {
 	TransactionStatus string
 	TotalQuantity     int
 	TotalPrice        int
-	PaymentMethod     int `gorm:"foreignKey:PaymentMethodID"`
-	UserID            int `gorm:"foreignKey:UserID"`
+
+	//one to many
+	//every Transaction has many payment method, and a payment method can only work for one transaction
+	PaymentMethods []PaymentMethod
+	//every transaction has many users, but a user can only have one transaction at a time
+	Users []User
+
+	//many2many
+	ShoppingCarts []*ShoppingCart `gorm:"many2many:transaction_shoppingcart;"`
 }

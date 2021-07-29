@@ -6,5 +6,5 @@ import (
 
 type ProductDescription struct {
 	gorm.Model
-	ProductDescription string `gorm:"not null"`
+	ProductDescriptions string `gorm:"not null"`
 }
