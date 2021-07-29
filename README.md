@@ -8,9 +8,9 @@ API E-commerce untuk Alta Store
 # Table of Content
 
 - [Introduction](#introduction)
-- [Feature Overview](#Feature Overview)
-- [How to use](#How to use)
-- [Memahami Projek](#Memahami Projek)
+- [Feature Overview](#Feature/Overview)
+- [How to use](#How/to/use)
+- [Memahami Projek](#Memahami/Projek)
 
 # Introduction
 Project ini merupakan API untuk aplikasi E-commerce ALTA Shop. Project ini ditulis menggunakan bahasa pemrograman Golang menggunakan Echo framework dan GORM.
