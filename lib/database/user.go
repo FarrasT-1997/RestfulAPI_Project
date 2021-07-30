@@ -1,12 +1,13 @@
 package database
 
+import (
+	"restfulAPI/config"
+	"restfulAPI/models"
+)
 
-func SignUp() (interface{}, error) {
-	var users []model.User
-	if err := config.DB.Save(&users).Error; err != nil {
+func SignUp(user models.User) (interface{}, error) {
+	if err := config.DB.Save(&user).Error; err != nil {
 		return nil, err
 	}
-	return users, nil
+	return user, nil
 }
-
-func

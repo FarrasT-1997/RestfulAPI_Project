@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"restfulAPI/models"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

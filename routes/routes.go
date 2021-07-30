@@ -1,35 +1,39 @@
 package routes
 
 import (
+	"restfulAPI/constant"
+	"restfulAPI/controller"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
 
 func New(e *echo.Echo) {
 
-	e.POST("/login", controllers.Login)
-	e.POST("/signup", controllers.SignUpUser)
+	e.POST("/login", controller.Login)
+	e.POST("/signup", controller.SignUpUser)
 
-	e.GET("/category", controllers.GetAllCategory)
-	e.GET("/category/:namecategory", controllers.GetAllSpecifiedProductCategory)
-	e.GET("/product/:nameproduct", controllers.GetProductDetail)
+	e.GET("/category", controller.GetAllCategory)
+	e.GET("/category/:namecategory", controller.GetAllSpecifiedProductCategory)
+	e.GET("/product/:nameproduct", controller.GetProductDetail)
 	// e.PUT("/product/:nameproduct", controllers.ChangeProductStock)
 
-	e.GET("/cart", controllers.GetAllProductInChart)
-	e.POST("/cart/:nameproduct", controllers.InsertProductIntoChart)
-	e.DELETE("/cart/:nameproduct", controllers.DeleteProductInChart)
-	e.PUT("/cart/:nameproduct", controllers.ChangeProductStockInCart)
+	e.GET("/cart", controller.GetAllProductInChart)
+	e.POST("/cart/:nameproduct", controller.InsertProductIntoChart)
+	e.DELETE("/cart/:nameproduct", controller.DeleteProductInChart)
+	e.PUT("/cart/:nameproduct", controller.ChangeProductStockInCart)
 
-	e.GET("/transactiondetail", controllers.GetTransactionStatus)
-	e.POST("/transactiondetail", controllers.MakeTransactionDetail)
-	e.DELETE("/transactiondetail", controllers.DeleteTransactionDetail)
+	e.GET("/transactiondetail", controller.GetTransactionStatus)
+	e.POST("/transactiondetail", controller.MakeTransactionDetail)
+	e.DELETE("/transactiondetail", controller.DeleteTransactionDetail)
 
-	e.GET("/transaction", controllers.StatusTransaction)
-	e.PUT("/transaction/checkout", controllers.ChangeTransactionStatus)
-	e.DELETE("/transaction", controllers.DeleteTransaction)
+	e.GET("/transaction", controller.StatusTransaction)
+	e.PUT("/transaction/checkout", controller.ChangeTransactionStatus)
+	e.DELETE("/transaction", controller.DeleteTransaction)
 
 	eJwt := e.Group("/jwt")
 	eJwt.Use(middleware.JWT([]byte(constant.SECRET_JWT)))
-	eJwt.GET("/users", controllers.GetAllUsers)
-	eJwt.PUT("/users/:userid", controllers.ChangeProfile)
+	// eJwt.GET("/users", controller.GetAllUsers)
+	eJwt.PUT("/users/:userid", controller.ChangeProfile)
+	eJwt.GET("/users/:userid", controller.ShowProfile)
 }
