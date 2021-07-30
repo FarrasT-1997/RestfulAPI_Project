@@ -1,8 +1,8 @@
 package main
 
 import (
-	"project/team-alta/api-ecommerce/config"
-	"project/team-alta/api-ecommerce/routes"
+	"restfulAPI/config"
+	"restfulAPI/routes"
 
 	"github.com/labstack/echo"
 )

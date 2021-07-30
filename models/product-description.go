@@ -1,10 +1,7 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
-
 type ProductDescription struct {
-	gorm.Model
+	ID                  uint
 	ProductDescriptions string `gorm:"not null"`
+	ProductID           uint
 }

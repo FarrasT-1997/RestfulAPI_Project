@@ -13,10 +13,10 @@ var DB *gorm.DB
 func Init_DB() {
 	config := map[string]string{
 		"HTTP_USERNAME": "root",
-		"HTTP_PASSWORD": "aPassword",
+		"HTTP_PASSWORD": "gconus5226",
 		"HTTP_PORT":     "3306",
 		"HTTP_HOST":     "127.0.0.1",
-		"HTTP_NAME":     "a_schema_for_database",
+		"HTTP_NAME":     "RestfulProject",
 	}
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		config["HTTP_USERNAME"],
