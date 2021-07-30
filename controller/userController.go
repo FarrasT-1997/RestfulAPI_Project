@@ -2,6 +2,8 @@ package controller
 
 import (
 	"net/http"
+	"restfulAPI/lib/database"
+	"restfulAPI/middlewares"
 	"restfulAPI/models"
 	"strconv"
 
@@ -27,7 +29,7 @@ func SignUpUser(c echo.Context) error {
 
 func Login(c echo.Context) error {
 	userData := models.User{}
-	c.Bind(userData)
+	c.Bind(&userData)
 
 	user, err := database.LoginUsers(userData.Email, userData.Password)
 	if err != nil {
@@ -42,7 +44,7 @@ func Login(c echo.Context) error {
 }
 
 func ChangeProfile(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("userid"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
@@ -63,7 +65,7 @@ func ChangeProfile(c echo.Context) error {
 }
 
 func Logout(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("userid"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "invalid id",
@@ -80,6 +82,29 @@ func Logout(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "GOODBYE!",
+		"data":    user,
+	})
+}
+
+func ShowProfile(c echo.Context) error {
+	userId, err := strconv.Atoi(c.Param("userid"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	loggedInUserId := middlewares.ExtractTokenUserId(c)
+	if loggedInUserId != userId {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
+	user, err := database.GetDetailUser(userId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot find the user",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
 		"data":    user,
 	})
 }
