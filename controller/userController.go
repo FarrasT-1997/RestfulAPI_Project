@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"restfulAPI/lib/database"
 	"restfulAPI/models"
 	"strconv"
 

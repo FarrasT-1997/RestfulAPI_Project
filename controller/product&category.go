@@ -10,6 +10,7 @@ import (
 )
 
 func GetAllCategory(c echo.Context) error {
+
 	category, err := database.GetAllCategories()
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -20,23 +21,33 @@ func GetAllCategory(c echo.Context) error {
 	})
 }
 
-// func GetAllSpecifiedProductCategory(c echo.Context) error {
-// 	categoryName, err := strconv.Atoi(c.Param("namecategory"))
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": "invalid id",
-// 		})
-// 	}
-// }
-
-func GetProductDetail(c echo.Context) error {
-	nameProduct, err := strconv.Atoi(c.Param(":nameproduct"))
+func GetAllSpecifiedProductCategory(c echo.Context) error {
+	categoryId, err := strconv.Atoi(c.Param("idcategory"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"message": "invalid name",
+			"message": "invalid id",
 		})
 	}
-	product, err := database.GetSpecificProduct(nameProduct)
+	categoryList, err := database.GetAllProductInSpecifiedCategory(categoryId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot find product list",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+		"data":    categoryList,
+	})
+}
+
+func GetProductDetail(c echo.Context) error {
+	productId, err := strconv.Atoi(c.Param("idproduct"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid product id",
+		})
+	}
+	product, err := database.GetSpecificProduct(productId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot find product",
