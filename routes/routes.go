@@ -36,5 +36,5 @@ func New(e *echo.Echo) {
 
 	eJwt.POST("/transaction", controller.MakeTransaction)
 	eJwt.GET("/transaction", controller.GetAllTransaction)
-	eJwt.GET("/transaction/:transactionId", controller.DeleteTransaction)
+	// eJwt.GET("/transaction/:transactionId", controller.DeleteTransaction)
 }

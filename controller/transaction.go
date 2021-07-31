@@ -57,6 +57,6 @@ func GetAllTransaction(c echo.Context) error {
 	})
 }
 
-func DeleteTransaction(c echo.Context) error {
+// func DeleteTransaction(c echo.Context) error {
 
-}
+// }
