@@ -51,6 +51,11 @@ func ChangeProfile(c echo.Context) error {
 		})
 	}
 	editUser, err := database.GetOneUser(id)
+	loggedInUserId, token := middlewares.ExtractTokenUserId(c)
+	if loggedInUserId != id || editUser.Token != token {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
+
 	c.Bind(&editUser)
 	user, err := database.EditUser(editUser)
 	if err != nil {
@@ -93,8 +98,9 @@ func ShowProfile(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	loggedInUserId := middlewares.ExtractTokenUserId(c)
-	if loggedInUserId != userId {
+	userAuth, err := database.GetOneUser(userId)
+	loggedInUserId, token := middlewares.ExtractTokenUserId(c)
+	if loggedInUserId != userId || userAuth.Token != token {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
 	user, err := database.GetDetailUser(userId)

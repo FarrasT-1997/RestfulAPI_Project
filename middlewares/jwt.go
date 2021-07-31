@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"restfulAPI/constant"
 	"time"
 
@@ -18,13 +17,12 @@ func CreateToken(userId int) (string, error) {
 	return token.SignedString([]byte(constant.SECRET_JWT))
 }
 
-func ExtractTokenUserId(c echo.Context) int {
+func ExtractTokenUserId(c echo.Context) (int, string) {
 	user := c.Get("user").(*jwt.Token)
-	fmt.Println(user)
 	if user.Valid {
 		claims := user.Claims.(jwt.MapClaims)
 		userId := int(claims["userId"].(float64))
-		return userId
+		return userId, user.Raw
 	}
-	return 0
+	return 0, "a"
 }

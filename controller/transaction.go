@@ -5,25 +5,29 @@ import (
 	"restfulAPI/lib/database"
 	"restfulAPI/middlewares"
 	"restfulAPI/models"
+	"strconv"
 
 	"github.com/labstack/echo"
 )
 
+func Authorized(c echo.Context) (bool, models.User) {
+	userId, token := middlewares.ExtractTokenUserId(c)
+	userList, _ := database.GetOneUser(userId)
+
+	if userList.Token != token {
+		return false, userList
+	}
+	return true, userList
+}
+
 func MakeTransaction(c echo.Context) error {
-	transaction := models.Transaction{}
-	userId := middlewares.ExtractTokenUserId(c)
-	userList, err := database.GetOneUser(userId)
-	userName := userList.FullName
-	userAddress := userList.Address
+	auth, userList := Authorized(c)
+	if auth == false {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
 
 	payment, err := database.GetAllPaymentTransaction()
-	transaction.Users = userName
-	transaction.Address = userAddress
-	transaction.PaymentMethodID = 99
-	transaction.PaymentMethod = payment[len(payment)-1]
-	transaction.TransactionStatus = "waiting"
-	transaction.TotalQuantity = 0
-	transaction.TotalPrice = 0
+	transaction := database.InputTransactioData(userList, payment)
 	c.Bind(&transaction)
 	transactionId, err := database.CreateTransaction(transaction)
 	if err != nil {
@@ -38,17 +42,14 @@ func MakeTransaction(c echo.Context) error {
 }
 
 func GetAllTransaction(c echo.Context) error {
-	userId := middlewares.ExtractTokenUserId(c)
-	userList, err := database.GetOneUser(userId)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot find user",
-		})
+	auth, userList := Authorized(c)
+	if auth == false {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
 	transactionList, err := database.GetTransactionById(userList.FullName)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message": "cannot find user",
+			"message": "cannot show transaction list",
 		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
@@ -57,6 +58,83 @@ func GetAllTransaction(c echo.Context) error {
 	})
 }
 
-// func DeleteTransaction(c echo.Context) error {
+func DeleteTransaction(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("transactionId"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	auth, userList := Authorized(c)
+	transactionList, err := database.GetOneTransaction(id)
 
-// }
+	if auth == false || userList.FullName != transactionList.Users {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
+	transaction, err := database.DeleteTransactions(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot delete data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+		"data":    transaction,
+	})
+}
+
+func ChangeStatus(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("transactionId"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	auth, userList := Authorized(c)
+	transaction, err := database.GetOneTransaction(id)
+
+	if auth == false || userList.FullName != transaction.Users {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
+	transaction.TransactionStatus = "paid"
+	c.Bind(&transaction)
+	transactionSaved, err := database.EditTransaction(transaction)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot edit data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+		"data":    transactionSaved,
+	})
+}
+
+func ChangePaymentMethod(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("transactionId"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	payment, err := database.GetAllPaymentTransaction()
+	auth, userList := Authorized(c)
+	transaction, err := database.GetOneTransaction(id)
+
+	if auth == false || userList.FullName != transaction.Users {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
+	c.Bind(&transaction)
+	transaction.PaymentMethod = payment[transaction.PaymentMethodID-1]
+	c.Bind(&transaction)
+	transactionSaved, err := database.EditTransaction(transaction)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot edit data",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+		"data":    transactionSaved,
+	})
+}
