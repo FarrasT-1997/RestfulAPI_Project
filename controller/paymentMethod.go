@@ -7,14 +7,15 @@ import (
 	"github.com/labstack/echo"
 )
 
-func GetAllPaymentMethods(c echo.Context) error {
-
-	category, err := database.GetAllPayment()
+func GetPaymentMethod(c echo.Context) error {
+	listOfPayment, err := database.GetAllPayment()
 	if err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "failed to retrive data.",
+		})
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message": "Success",
-		"users":   category,
+		"message":         "succes retrive data.",
+		"list of payment": listOfPayment,
 	})
 }
