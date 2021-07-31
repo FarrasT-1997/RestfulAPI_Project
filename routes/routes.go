@@ -30,6 +30,9 @@ func New(e *echo.Echo) {
 	// e.PUT("/transaction/checkout", controller.ChangeTransactionStatus)
 	// e.DELETE("/transaction", controller.DeleteTransaction)
 
+	e.GET("/paymentmethod", controller.GetPaymentMethod)
+	e.POST("/paymentmethod/:method", controller.AddPaymentMethod)
+
 	eJwt := e.Group("/jwt")
 	eJwt.Use(middleware.JWT([]byte(constant.SECRET_JWT)))
 	eJwt.PUT("/users/:userid", controller.ChangeProfile)
