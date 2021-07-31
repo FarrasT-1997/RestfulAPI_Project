@@ -17,7 +17,7 @@ func New(e *echo.Echo) {
 	e.GET("/category/:idcategory", controller.GetAllSpecifiedProductCategory)
 	e.GET("/product/:idproduct", controller.GetProductDetail)
 
-	e.GET("/payment", controller.GetAllPaymentMethods)
+	e.GET("/payment", controller.GetPaymentMethod)
 
 	// e.GET("/cart", controller.GetAllProductInChart)
 	// e.POST("/cart/:nameproduct", controller.InsertProductIntoChart)
