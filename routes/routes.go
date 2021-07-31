@@ -31,7 +31,6 @@ func New(e *echo.Echo) {
 	// e.DELETE("/transaction", controller.DeleteTransaction)
 
 	e.GET("/paymentmethod", controller.GetPaymentMethod)
-	e.POST("/paymentmethod/:method", controller.AddPaymentMethod)
 
 	eJwt := e.Group("/jwt")
 	eJwt.Use(middleware.JWT([]byte(constant.SECRET_JWT)))
