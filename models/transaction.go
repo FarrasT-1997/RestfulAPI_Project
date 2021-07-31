@@ -9,13 +9,9 @@ type Transaction struct {
 	TransactionStatus string
 	TotalQuantity     int
 	TotalPrice        int
-
-	//one to many
-	//every Transaction has many payment method, and a payment method can only work for one transaction
-	PaymentMethods PaymentMethod
-	//every transaction has many users, but a user can only have one transaction at a time
-	Users User
-
-	//many2many
-	ShoppingCarts []ShoppingCart `gorm:"many2many:transaction_shoppingcart;"`
+	PaymentMethodID   uint
+	PaymentMethod     PaymentMethodTable
+	Users             string
+	Address           string
+	ShoppingCarts     ShoppingCart
 }
