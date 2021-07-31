@@ -13,10 +13,3 @@ func GetAllPaymentMethod() (interface{}, error) {
 	}
 	return result, nil
 }
-
-func InsertPaymentMethod(paymentmethod models.PaymentMethod) (interface{}, error) {
-	if err := config.DB.Save(&paymentmethod).Error; err != nil {
-		return nil, err
-	}
-	return paymentmethod, nil
-}
