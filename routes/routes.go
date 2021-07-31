@@ -24,10 +24,6 @@ func New(e *echo.Echo) {
 	// e.DELETE("/cart/:nameproduct", controller.DeleteProductInChart)
 	// e.PUT("/cart/:nameproduct", controller.ChangeProductStockInCart)
 
-	// e.GET("/transactiondetail", controller.GetTransactionStatus)
-
-	// e.DELETE("/transactiondetail", controller.DeleteTransactionDetail)
-
 	// e.GET("/transaction", controller.StatusTransaction)
 	// e.PUT("/transaction/checkout", controller.ChangeTransactionStatus)
 	// e.DELETE("/transaction", controller.DeleteTransaction)
@@ -39,4 +35,6 @@ func New(e *echo.Echo) {
 	eJwt.PUT("/logout/:userid", controller.Logout)
 
 	eJwt.POST("/transaction", controller.MakeTransaction)
+	eJwt.GET("/transaction", controller.GetAllTransaction)
+	eJwt.GET("/transaction/:transactionId", controller.DeleteTransaction)
 }

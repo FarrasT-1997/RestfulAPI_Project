@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"net/http"
 	"restfulAPI/lib/database"
 	"restfulAPI/middlewares"
@@ -14,7 +13,6 @@ func MakeTransaction(c echo.Context) error {
 	transaction := models.Transaction{}
 	userId := middlewares.ExtractTokenUserId(c)
 	userList, err := database.GetOneUser(userId)
-	fmt.Println(userList)
 	userName := userList.FullName
 	userAddress := userList.Address
 
@@ -37,4 +35,28 @@ func MakeTransaction(c echo.Context) error {
 		"message": "New transaction added successfully",
 		"data":    transactionId,
 	})
+}
+
+func GetAllTransaction(c echo.Context) error {
+	userId := middlewares.ExtractTokenUserId(c)
+	userList, err := database.GetOneUser(userId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot find user",
+		})
+	}
+	transactionList, err := database.GetTransactionById(userList.FullName)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot find user",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+		"data":    transactionList,
+	})
+}
+
+func DeleteTransaction(c echo.Context) error {
+
 }
