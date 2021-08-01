@@ -14,12 +14,19 @@ func SelectProduct(productId int) (models.Product, error) {
 	return product, nil
 }
 
-func SaveProduct(cart models.ShoppingCart) (interface{}, error) {
+func SaveProduct(cart models.ShoppingCart) (models.ShoppingCart, error) {
 	if err := config.DB.Save(&cart).Error; err != nil {
-		return nil, err
+		return cart, err
 	}
 	return cart, nil
 }
+
+// func UpdateTransactionProduct(cart models.ShoppingCart) (models.ShoppingCart, error) {
+// 	if err := config.DB.Find(&cart).Error; err != nil {
+// 		return cart, err
+// 	}
+// 	return cart, nil
+// }
 
 func CheckCart(transactionId, productId int) bool {
 	var cart models.ShoppingCart
@@ -39,9 +46,17 @@ func SelectCart(id int) (models.ShoppingCart, error) {
 	return cart, nil
 }
 
-func EditCart(cart models.ShoppingCart) (interface{}, error) {
+func SelectAllCart(id int) ([]models.ShoppingCart, error) {
+	var cart []models.ShoppingCart
+	if err := config.DB.Find(&cart, "transaction_id=?", id).Error; err != nil {
+		return cart, err
+	}
+	return cart, nil
+}
+
+func EditCart(cart models.ShoppingCart) (models.ShoppingCart, error) {
 	if err := config.DB.Save(&cart).Error; err != nil {
-		return nil, err
+		return cart, err
 	}
 	return cart, nil
 }

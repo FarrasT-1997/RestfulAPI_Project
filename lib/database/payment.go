@@ -20,3 +20,11 @@ func GetAllPaymentTransaction() ([]models.PaymentMethodTable, error) {
 	}
 	return user, nil
 }
+
+func GetOnePayment(id int) (models.PaymentMethodTable, error) {
+	var payment models.PaymentMethodTable
+	if err := config.DB.Find(&payment, "id=?", id).Error; err != nil {
+		return payment, err
+	}
+	return payment, nil
+}

@@ -49,6 +49,7 @@ func MakeCartID(c echo.Context) error {
 	c.Bind(&cart)
 
 	cartAdded, err := database.SaveProduct(cart)
+	updateTransaction(c, transaction, transactionId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot add product",
@@ -86,16 +87,19 @@ func ChangeQuantity(c echo.Context) error {
 			"message": "invalid id cart",
 		})
 	}
-
 	auth, user := Authorized(c)
 	transaction, _ := database.GetOneTransaction(transactionId)
 	if auth == false || user.FullName != transaction.Users || cartSelected.TransactionID != transaction.ID {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
+
+	productSelected, _ := database.SelectProduct(int(cartSelected.ProductID))
+
 	cartSelected.Quantity = quantity
-	cartSelected.Price = cartSelected.Price * quantity
+	cartSelected.Price = productSelected.Price * quantity
 	c.Bind(&cartSelected)
 	cartSave, err := database.EditCart(cartSelected)
+	updateTransaction(c, transaction, transactionId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot edit product",
@@ -132,6 +136,7 @@ func DeleteCart(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
 	deletedCart, err := database.DeleteCart(cartId)
+	updateTransaction(c, transaction, transactionId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"message": "cannot delete cart",
@@ -140,5 +145,45 @@ func DeleteCart(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "success",
 		"data":    deletedCart,
+	})
+}
+
+func updateTransaction(c echo.Context, transaction models.Transaction, transactionId int) (interface{}, error) {
+	cartSelected, err := database.SelectAllCart(transactionId)
+	transaction.TotalPrice = 0
+	transaction.TotalQuantity = 0
+	for i := 0; i < len(cartSelected); i++ {
+		transaction.TotalPrice += cartSelected[i].Price
+		transaction.TotalQuantity += cartSelected[i].Quantity
+	}
+	c.Bind(&transaction)
+	transactionUpdated, err := database.EditTransaction(transaction)
+	if err != nil {
+		return nil, err
+	}
+	return transactionUpdated, nil
+}
+
+func GetCartOfTransaction(c echo.Context) error {
+	transactionId, err := strconv.Atoi(c.Param("transactionId"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id",
+		})
+	}
+	auth, user := Authorized(c)
+	transaction, _ := database.GetOneTransaction(transactionId)
+	if auth == false || user.FullName != transaction.Users {
+		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
+	}
+	cartSelected, err := database.SelectAllCart(transactionId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"message": "cannot show all product in cart",
+		})
+	}
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "success",
+		"data":    cartSelected,
 	})
 }
