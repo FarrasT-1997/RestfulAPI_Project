@@ -13,5 +13,5 @@ type Transaction struct {
 	PaymentMethod     PaymentMethodTable
 	Users             string
 	Address           string
-	ShoppingCarts     ShoppingCart
+	ShoppingCarts     []ShoppingCart
 }

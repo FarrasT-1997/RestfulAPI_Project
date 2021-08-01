@@ -7,5 +7,4 @@ type Product struct {
 	Price              int `gorm:"not null"`
 	Stock              int `gorm:"not null"`
 	ProductDescription ProductDescription
-	ShoppingCarts      []ShoppingCart `gorm:"many2many"`
 }

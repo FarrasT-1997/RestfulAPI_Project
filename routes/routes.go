@@ -41,4 +41,8 @@ func New(e *echo.Echo) {
 	eJwt.DELETE("/transaction/:transactionId", controller.DeleteTransaction)
 	eJwt.PUT("/transaction/payment/:transactionId", controller.ChangePaymentMethod)
 	eJwt.PUT("/transaction/paid/:transactionId", controller.ChangeStatus)
+
+	eJwt.POST("/transaction/:transactionId/cart/:productId", controller.MakeCartID)
+	eJwt.PUT("/transaction/:transactionId/cart/:cartId/:quantity", controller.ChangeQuantity)
+	eJwt.DELETE("/transaction/:transactionId/:cartId", controller.DeleteCart)
 }
