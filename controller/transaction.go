@@ -117,15 +117,20 @@ func ChangePaymentMethod(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	payment, err := database.GetAllPaymentTransaction()
+	paymentId, err := strconv.Atoi(c.Param("paymentId"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid payment id",
+		})
+	}
+	payment, err := database.GetOnePayment(paymentId)
 	auth, userList := Authorized(c)
 	transaction, err := database.GetOneTransaction(id)
 
 	if auth == false || userList.FullName != transaction.Users {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
-	c.Bind(&transaction)
-	transaction.PaymentMethod = payment[transaction.PaymentMethodID-1]
+	transaction.PaymentMethod = payment
 	c.Bind(&transaction)
 	transactionSaved, err := database.EditTransaction(transaction)
 	if err != nil {

@@ -16,18 +16,6 @@ func New(e *echo.Echo) {
 	e.GET("/category", controller.GetAllCategory)
 	e.GET("/category/:idcategory", controller.GetAllSpecifiedProductCategory)
 	e.GET("/product/:idproduct", controller.GetProductDetail)
-
-	e.GET("/payment", controller.GetPaymentMethod)
-
-	// e.GET("/cart", controller.GetAllProductInChart)
-	// e.POST("/cart/:nameproduct", controller.InsertProductIntoChart)
-	// e.DELETE("/cart/:nameproduct", controller.DeleteProductInChart)
-	// e.PUT("/cart/:nameproduct", controller.ChangeProductStockInCart)
-
-	// e.GET("/transaction", controller.StatusTransaction)
-	// e.PUT("/transaction/checkout", controller.ChangeTransactionStatus)
-	// e.DELETE("/transaction", controller.DeleteTransaction)
-
 	e.GET("/paymentmethod", controller.GetPaymentMethod)
 
 	eJwt := e.Group("/jwt")
@@ -39,6 +27,11 @@ func New(e *echo.Echo) {
 	eJwt.POST("/transaction", controller.MakeTransaction)
 	eJwt.GET("/transaction", controller.GetAllTransaction)
 	eJwt.DELETE("/transaction/:transactionId", controller.DeleteTransaction)
-	eJwt.PUT("/transaction/payment/:transactionId", controller.ChangePaymentMethod)
+	eJwt.PUT("/transaction/payment/:transactionId/:paymentId", controller.ChangePaymentMethod)
 	eJwt.PUT("/transaction/paid/:transactionId", controller.ChangeStatus)
+
+	eJwt.POST("/transaction/:transactionId/cart/:productId", controller.MakeCartID)
+	eJwt.PUT("/transaction/:transactionId/cart/:cartId/:quantity", controller.ChangeQuantity)
+	eJwt.DELETE("/transaction/:transactionId/:cartId", controller.DeleteCart)
+	eJwt.GET("/transaction/cart/:transactionId", controller.GetCartOfTransaction)
 }
