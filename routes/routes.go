@@ -17,16 +17,12 @@ func New(e *echo.Echo) {
 	e.GET("/category/:idcategory", controller.GetAllSpecifiedProductCategory)
 	e.GET("/product/:idproduct", controller.GetProductDetail)
 
-	e.GET("/payment", controller.GetAllPaymentMethods)
+	e.GET("/payment", controller.GetPaymentMethod)
 
 	// e.GET("/cart", controller.GetAllProductInChart)
 	// e.POST("/cart/:nameproduct", controller.InsertProductIntoChart)
 	// e.DELETE("/cart/:nameproduct", controller.DeleteProductInChart)
 	// e.PUT("/cart/:nameproduct", controller.ChangeProductStockInCart)
-
-	// e.GET("/transactiondetail", controller.GetTransactionStatus)
-
-	// e.DELETE("/transactiondetail", controller.DeleteTransactionDetail)
 
 	// e.GET("/transaction", controller.StatusTransaction)
 	// e.PUT("/transaction/checkout", controller.ChangeTransactionStatus)
@@ -41,4 +37,8 @@ func New(e *echo.Echo) {
 	eJwt.PUT("/logout/:userid", controller.Logout)
 
 	eJwt.POST("/transaction", controller.MakeTransaction)
+	eJwt.GET("/transaction", controller.GetAllTransaction)
+	eJwt.DELETE("/transaction/:transactionId", controller.DeleteTransaction)
+	eJwt.PUT("/transaction/payment/:transactionId", controller.ChangePaymentMethod)
+	eJwt.PUT("/transaction/paid/:transactionId", controller.ChangeStatus)
 }
