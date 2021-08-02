@@ -5,7 +5,6 @@ import (
 	"restfulAPI/lib/database"
 	"strconv"
 
-	// "restfulAPI/middlewares"
 	"github.com/labstack/echo"
 )
 

@@ -21,13 +21,6 @@ func SaveProduct(cart models.ShoppingCart) (models.ShoppingCart, error) {
 	return cart, nil
 }
 
-// func UpdateTransactionProduct(cart models.ShoppingCart) (models.ShoppingCart, error) {
-// 	if err := config.DB.Find(&cart).Error; err != nil {
-// 		return cart, err
-// 	}
-// 	return cart, nil
-// }
-
 func CheckCart(transactionId, productId int) bool {
 	var cart models.ShoppingCart
 	err := config.DB.Where("transaction_id=? AND product_id=?", transactionId, productId).First(&cart).Error
