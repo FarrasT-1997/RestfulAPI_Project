@@ -75,7 +75,18 @@ func DeleteTransaction(c echo.Context) error {
 	if transactionList.Checkout == "success" {
 		return echo.NewHTTPError(http.StatusBadRequest, "Cannot edit this transaction")
 	}
-
+  
+	cartSelected, err := database.SelectAllCart(id)
+  if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "invalid id cart",
+		})
+	}
+  
+	for i := 0; i < len(cartSelected); i++ {
+		database.DeleteCart(int(cartSelected[i].ID))
+	}
+  
 	transaction, err := database.DeleteTransactions(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
