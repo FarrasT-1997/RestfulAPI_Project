@@ -71,6 +71,11 @@ func DeleteTransaction(c echo.Context) error {
 	if auth == false || userList.FullName != transactionList.Users {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
+
+	if transactionList.Checkout == "success" {
+		return echo.NewHTTPError(http.StatusBadRequest, "Cannot delete this transaction")
+	}
+
 	transaction, err := database.DeleteTransactions(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -96,6 +101,11 @@ func ChangeStatus(c echo.Context) error {
 	if auth == false || userList.FullName != transaction.Users {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
+
+	if transaction.Checkout == "success" {
+		return echo.NewHTTPError(http.StatusBadRequest, "Cannot delete this transaction")
+	}
+
 	transaction.TransactionStatus = "paid"
 	c.Bind(&transaction)
 	transactionSaved, err := database.EditTransaction(transaction)
@@ -124,6 +134,11 @@ func ChangePaymentMethod(c echo.Context) error {
 	if auth == false || userList.FullName != transaction.Users {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
+
+	if transaction.Checkout == "success" {
+		return echo.NewHTTPError(http.StatusBadRequest, "Cannot edit this transaction")
+	}
+
 	c.Bind(&transaction)
 	transaction.PaymentMethod = payment[transaction.PaymentMethodID-1]
 	c.Bind(&transaction)

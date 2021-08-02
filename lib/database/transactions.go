@@ -32,6 +32,7 @@ func InputTransactioData(userList models.User, payment []models.PaymentMethodTab
 	transaction.TransactionStatus = "waiting"
 	transaction.TotalQuantity = 0
 	transaction.TotalPrice = 0
+	transaction.Checkout = "not yet"
 	return transaction
 }
 
