@@ -1,6 +1,6 @@
-# ALTA SHOPPING
+# ![ALTA SHOPPING](https://ibb.co/dbMMBSd)
 
-API E-commerce untuk Alta Store
+API E-commerce untuk Alta Store 
 
 [![Go.Dev reference](https://img.shields.io/badge/gorm-reference-blue?logo=go&logoColor=white)](https://pkg.go.dev/gorm.io/gorm?tab=doc)
 [![Go.Dev reference](https://img.shields.io/badge/echo-reference-blue?logo=go&logoColor=white)](https://github.com/labstack/echo)
@@ -10,7 +10,9 @@ API E-commerce untuk Alta Store
 - [Introduction](#introduction)
 - [Feature Overview](#Feature/Overview)
 - [How to use](#How/to/use)
-- [Memahami Projek](#Memahami/Projek)
+- [HTTP Request User Menggunakan JSON](#HTTPRequestUserMenggunakanJSON)
+- [HTTP Request Category Menggunakan JSON](#HTTPRequestCategoryMenggunakanJSON)
+- [Understanding the Project](#Memahami/Projek)
 
 # Introduction
 Project ini merupakan API untuk aplikasi E-commerce ALTA Shop. Project ini ditulis menggunakan bahasa pemrograman Golang menggunakan Echo framework dan GORM.
@@ -39,7 +41,64 @@ import (
     "https://github.com/FarrasT-1997/RestfulAPI_Project"
 )
 ```
-# Memahami Projek
+
+# HTTP Request User Menggunakan JSON
+- Login ke User
+```
+curl -X POST localhost:{yourport}/login
+   -H 'Content-Type: application/json'
+   -d '{"email":"{your email}","password":"{your password}"}'
+```
+- Signup/mendaftar User
+```
+curl -X POST localhost:{yourport}/signup
+   -H 'Content-Type: application/json'-d '{"name":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
+```
+
+# HTTP Request Category Menggunakan JSON
+- Mengambil seluruh kategori barang yang tersedia
+```
+curl localhost:{your port}/category
+```
+- Mengambil barang yang ada pada kategory tertentu
+```
+curl localhost:{your port}/category/{category id}
+```
+- Mengambil barang berdasarkan id barang
+```
+curl localhost:{your port}/product/{product category}
+```
+
+# HTTP Request Mengakses User
+- Mengganti Profil
+```
+curl -X PUT localhost:{your port}/users/{user id}
+	-H "Accept: application/json"
+    -H "Authorization: Bearer {token}"
+    -d '{"name":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
+
+```
+- Melihat Profil
+```
+curl localhost:{your port}/users/{user id}
+ -H 'Accept: application/json' 
+ -H "Authorization: Bearer {token}"
+```
+- Logout User
+```
+curl -X PUT localhost:{your port}/logout/{user id}
+ -H 'Accept: application/json' 
+ -H "Authorization: Bearer {token}" 
+```
+# HTTP Request Transaksi Menggunakan JSON
+- Membuat transaksi
+```
+curl -X POST localhost:{your port}/transaction
+ -H 'Accept: application/json' 
+ -H "Authorization: Bearer {token}" 
+ 
+```
+# Understanding the Project
 
 Project ini bertujuan sebagai API untuk Alta Shop, dari pemilihan produk, memasukkan produk ke dalam chart, pembayaran produk, serta pembuatan akun pembeli.
 
