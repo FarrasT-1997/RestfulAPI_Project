@@ -29,6 +29,10 @@ func MakeCartID(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
 
+	if transaction.Checkout == "success" {
+		return echo.NewHTTPError(http.StatusBadRequest, "Cannot add product to this transaction")
+	}
+
 	if check := database.CheckCart(transactionId, productId); check == false {
 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
 			"message": "product already added",
@@ -93,6 +97,10 @@ func ChangeQuantity(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
 
+	if transaction.Checkout == "success" {
+		return echo.NewHTTPError(http.StatusBadRequest, "Cannot edit this transaction")
+	}
+
 	productSelected, _ := database.SelectProduct(int(cartSelected.ProductID))
 
 	cartSelected.Quantity = quantity
@@ -135,6 +143,10 @@ func DeleteCart(c echo.Context) error {
 	if auth == false || user.FullName != transaction.Users || cartSelected.TransactionID != transaction.ID {
 		return echo.NewHTTPError(http.StatusUnauthorized, "Cannot access this account")
 	}
+	if transaction.Checkout == "success" {
+		return echo.NewHTTPError(http.StatusBadRequest, "Cannot edit this transaction")
+	}
+
 	deletedCart, err := database.DeleteCart(cartId)
 	updateTransaction(c, transaction, transactionId)
 	if err != nil {
