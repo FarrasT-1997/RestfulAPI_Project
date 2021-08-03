@@ -3,8 +3,6 @@
 
 # ALTA SHOPPING
 
-# ![ALTA SHOPPING](https://ibb.co/dbMMBSd)
-
 API E-commerce untuk Alta Store 
 
 [![Go.Dev reference](https://img.shields.io/badge/gorm-reference-blue?logo=go&logoColor=white)](https://pkg.go.dev/gorm.io/gorm?tab=doc)
