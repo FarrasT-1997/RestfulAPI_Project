@@ -1,6 +1,10 @@
+
 <a href="https://github.com/FarrasT-1997/RestfulAPI_Project"><img height="80" src="https://image.flaticon.com/icons/png/512/3081/3081648.png"></a>
 
 # ALTA SHOPPING
+
+# ![ALTA SHOPPING](https://ibb.co/dbMMBSd)
+
 API E-commerce untuk Alta Store 
 
 [![Go.Dev reference](https://img.shields.io/badge/gorm-reference-blue?logo=go&logoColor=white)](https://pkg.go.dev/gorm.io/gorm?tab=doc)
@@ -9,6 +13,7 @@ API E-commerce untuk Alta Store
 # Table of Content
 
 - [Introduction](#introduction)
+
 - [Feature Overview](#feature-overview)
 - [How to use](#how-to-use)
 - [HTTP Request User](#httprequestUser)
@@ -18,6 +23,13 @@ API E-commerce untuk Alta Store
 - [HTTP Request Cart](#httprequestCart)
 - [Understanding the Project](#memahami-projek)
 - [Image source](#image-source)
+
+- [Feature Overview](#Feature/Overview)
+- [How to use](#How/to/use)
+- [HTTP Request User Menggunakan JSON](#HTTPRequestUserMenggunakanJSON)
+- [HTTP Request Category Menggunakan JSON](#HTTPRequestCategoryMenggunakanJSON)
+- [Understanding the Project](#Memahami/Projek)
+
 
 # Introduction
 Project ini merupakan API untuk aplikasi E-commerce ALTA Shop. Project ini ditulis menggunakan bahasa pemrograman Golang menggunakan Echo framework dan GORM.
@@ -46,26 +58,43 @@ import (
     "https://github.com/FarrasT-1997/RestfulAPI_Project"
 )
 ```
+
 Untuk menjalankan API maka:
 ```
+$ chmod 755 start.sh
 $ ./start.sh
 ```
 
 Untuk payment method, harus membuat database yang berisi tabel paymentmethod dan datanya bisa dimasukkan secara manual. Contoh: id_bank= 1, nama_bank= bank abc, dst.
 # HTTP Request User
+
+
+# HTTP Request User Menggunakan JSON
+
 - Login ke User
 ```
 curl -X POST localhost:{yourport}/login
    -H 'Content-Type: application/json'
+
    -d '{"email}":"{your email}","password":"{your password}"}'
+
+   -d '{"email":"{your email}","password":"{your password}"}'
+
 ```
 - Signup/mendaftar User
 ```
 curl -X POST localhost:{yourport}/signup
+
    -H 'Content-Type: application/json'-d '{"name}":"{your name}","gender":"{your gender}","username":"{your username}","email":"{your email}","password":"{your password}","address":"{your address}"}'
 ```
 
 # HTTP Request Category
+
+   -H 'Content-Type: application/json'-d '{"name":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
+```
+
+# HTTP Request Category Menggunakan JSON
+
 - Mengambil seluruh kategori barang yang tersedia
 ```
 curl localhost:{your port}/category
@@ -81,6 +110,7 @@ curl localhost:{your port}/product/{product category}
 
 # HTTP Request Mengakses User
 
+
 Untuk mendapatkan token JWT maka harus melakukan http request login, jika login berhasil maka token akan didapatkan.
 
 - Mengganti Profil
@@ -90,15 +120,28 @@ curl -X PUT localhost:{your port}/jwt/users/{user id}
     -H "Authorization: Bearer {token}"
     -d '{"name":"{your name}","gender":"{your gender}","username":"{your username}","email":"{your email}","password":"{your password}","address":"{your address}"}'
 
+- Mengganti Profil
+```
+curl -X PUT localhost:{your port}/users/{user id}
+	-H "Accept: application/json"
+    -H "Authorization: Bearer {token}"
+    -d '{"name":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
+
+
 ```
 - Melihat Profil
 ```
+
 curl localhost:{your port}/jwt/users/{user id}
+
+curl localhost:{your port}/users/{user id}
+
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
 ```
 - Logout User
 ```
+
 curl -X PUT localhost:{your port}/jwt/logout/{user id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}" 
@@ -167,6 +210,20 @@ curl -X localhost:{your port}/jwt/transaction/cart/{transaction id}
 ```
 * Kemungkinan akan banyak curl method yang tidak berfungsi haha.
 * Dapat juga menggunakan Postman untuk melakukan HTTP Request, tinggal memasukkan value yang ada pada tiap method.
+
+
+curl -X PUT localhost:{your port}/logout/{user id}
+ -H 'Accept: application/json' 
+ -H "Authorization: Bearer {token}" 
+```
+# HTTP Request Transaksi Menggunakan JSON
+- Membuat transaksi
+```
+curl -X POST localhost:{your port}/transaction
+ -H 'Accept: application/json' 
+ -H "Authorization: Bearer {token}" 
+ 
+```
 
 # Understanding the Project
 
