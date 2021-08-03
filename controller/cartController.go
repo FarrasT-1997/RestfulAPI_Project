@@ -44,12 +44,14 @@ func MakeCartID(c echo.Context) error {
 			"message": "invalid id",
 		})
 	}
-	cart := models.ShoppingCart{}
-	cart.Price = productSelected.Price
-	cart.Quantity = 1
-	cart.TransactionID = uint(transactionId)
-	cart.ProductID = productSelected.ID
-	cart.ProductName = productSelected.Name
+	cart := models.ShoppingCart{
+		Price:         productSelected.Price,
+		Quantity:      1,
+		TransactionID: uint(transactionId),
+		ProductID:     productSelected.ID,
+		ProductName:   productSelected.Name,
+	}
+
 	c.Bind(&cart)
 
 	cartAdded, err := database.SaveProduct(cart)

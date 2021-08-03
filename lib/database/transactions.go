@@ -22,17 +22,17 @@ func GetTransactionById(name string) (interface{}, error) {
 }
 
 func InputTransactioData(userList models.User, payment []models.PaymentMethodTable) models.Transaction {
-	transaction := models.Transaction{}
-	userName := userList.FullName
-	userAddress := userList.Address
-	transaction.Users = userName
-	transaction.Address = userAddress
-	transaction.PaymentMethodID = 99
-	transaction.PaymentMethod = payment[len(payment)-1]
-	transaction.TransactionStatus = "waiting"
-	transaction.TotalQuantity = 0
-	transaction.TotalPrice = 0
-	transaction.Checkout = "not yet"
+	transaction := models.Transaction{
+		Users:             userList.FullName,
+		Address:           userList.Address,
+		PaymentMethodID:   99,
+		PaymentMethod:     payment[len(payment)-1],
+		TransactionStatus: "waiting",
+		TotalQuantity:     0,
+		TotalPrice:        0,
+		Checkout:          "not yet",
+	}
+
 	return transaction
 }
 
