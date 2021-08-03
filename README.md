@@ -88,7 +88,7 @@ Untuk mendapatkan token JWT maka harus melakukan http request login, jika login 
 curl -X PUT localhost:{your port}/jwt/users/{user id}
 	-H "Accept: application/json"
     -H "Authorization: Bearer {token}"
-    -d '{"name":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
+    -d '{"name":"{your name}","gender":"{your gender}","username":"{your username}","email":"{your email}","password":"{your password}","address":"{your address}"}'
 
 ```
 - Melihat Profil
