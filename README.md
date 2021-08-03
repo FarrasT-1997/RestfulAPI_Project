@@ -46,18 +46,23 @@ import (
     "https://github.com/FarrasT-1997/RestfulAPI_Project"
 )
 ```
+Untuk menjalankan API maka:
+```
+$ ./start.sh
+```
 
+Untuk payment method, harus membuat database yang berisi tabel paymentmethod dan datanya bisa dimasukkan secara manual. Contoh: id_bank= 1, nama_bank= bank abc, dst.
 # HTTP Request User
 - Login ke User
 ```
 curl -X POST localhost:{yourport}/login
    -H 'Content-Type: application/json'
-   -d '{"email":"{your email}","password":"{your password}"}'
+   -d '{"email}":"{your email}","password":"{your password}"}'
 ```
 - Signup/mendaftar User
 ```
 curl -X POST localhost:{yourport}/signup
-   -H 'Content-Type: application/json'-d '{"name":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
+   -H 'Content-Type: application/json'-d '{"name}":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
 ```
 
 # HTTP Request Category
@@ -80,7 +85,7 @@ Untuk mendapatkan token JWT maka harus melakukan http request login, jika login 
 
 - Mengganti Profil
 ```
-curl -X PUT localhost:{your port}/users/{user id}
+curl -X PUT localhost:{your port}/jwt/users/{user id}
 	-H "Accept: application/json"
     -H "Authorization: Bearer {token}"
     -d '{"name":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
@@ -88,78 +93,75 @@ curl -X PUT localhost:{your port}/users/{user id}
 ```
 - Melihat Profil
 ```
-curl localhost:{your port}/users/{user id}
+curl localhost:{your port}/jwt/users/{user id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
 ```
 - Logout User
 ```
-curl -X PUT localhost:{your port}/logout/{user id}
+curl -X PUT localhost:{your port}/jwt/logout/{user id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}" 
 ```
 # HTTP Request Transaksi
 - Membuat transaksi
 ```
-curl -X POST localhost:{your port}/transaction
+curl -X POST localhost:{your port}/jwt/transaction
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}" 
- -d '{}'
 ```
-- Melihat transaksi
+- Melihat semua transaksi
 ```
-curl localhost:{your port}/transaction
+curl localhost:{your port}/jwt/transaction
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}" 
 ```
 - Menghapus transaksi
 ```
-curl -X DELETE localhost:{your port}/transaction/{transaction id}
+curl -X DELETE localhost:{your port}/jwt/transaction/{transaction id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}" 
 ```
 - Mengubah payment method
 ```
-curl -X PUT localhost:{your port}/transaction/payment/{transaction id}/{payment id}
+curl -X PUT localhost:{your port}/jwt/transaction/payment/{transaction id}/{payment id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
- -d '{"paymentmethodid": "{paymentid}"}'
 ```
 - Checkout transaksi
 ```
-curl -X PUT localhost:{your port}/transaction/checkout/{transaction id}
+curl -X PUT localhost:{your port}/jwt/transaction/checkout/{transaction id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
 ```
 - Mengubah status transaksi
 ```
-curl -X PUT localhost:{your port}/transaction/paid/{transaction id}
+curl -X PUT localhost:{your port}/jwt/transaction/paid/{transaction id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
 ```
 # HTTP Request Cart
 - Memasukkan barang ke cart
 ```
-curl -X POST localhost:{your port}/transaction/{transaction id}/cart/{product id}
+curl -X POST localhost:{your port}/jwt/transaction/{transaction id}/cart/{product id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
 ```
 - Mengganti banyaknya barang yang dimasukkan
 ```
-curl -X PUT localhost:{your port}/transaction/{transaction id}/cart/{cart id}/{quantity}
+curl -X PUT localhost:{your port}/jwt/transaction/{transaction id}/cart/{cart id}/{quantity}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
- -d '{"quantity": "{2}"}'
 ```
 - Menghapus cart
 ```
-curl -X DELETE localhost:{your port}/transaction/{transaction id}/{cart id}
+curl -X DELETE localhost:{your port}/jwt/transaction/{transaction id}/{cart id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
 ```
 - Mendapatkan semua produk yang ada di dalam cart
 ```
-curl -X localhost:{your port}/transaction/cart/{transaction id}
+curl -X localhost:{your port}/jwt/transaction/cart/{transaction id}
  -H 'Accept: application/json' 
  -H "Authorization: Bearer {token}"
 ```
