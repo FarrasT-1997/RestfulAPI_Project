@@ -62,7 +62,7 @@ curl -X POST localhost:{yourport}/login
 - Signup/mendaftar User
 ```
 curl -X POST localhost:{yourport}/signup
-   -H 'Content-Type: application/json'-d '{"name}":"{your name}","gender":"{your gender}","username":"{your username","email":"{your email}","password":"{your password}","address":"{your address}"}'
+   -H 'Content-Type: application/json'-d '{"name}":"{your name}","gender":"{your gender}","username":"{your username}","email":"{your email}","password":"{your password}","address":"{your address}"}'
 ```
 
 # HTTP Request Category
