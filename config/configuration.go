@@ -13,7 +13,7 @@ var DB *gorm.DB
 func Init_DB() {
 	config := map[string]string{
 		"HTTP_USERNAME": "root",
-		"HTTP_PASSWORD": "gconus5226",
+		"HTTP_PASSWORD": "123456",
 		"HTTP_PORT":     "3306",
 		"HTTP_HOST":     "127.0.0.1",
 		"HTTP_NAME":     "RestfulProject",
