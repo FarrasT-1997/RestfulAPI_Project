@@ -48,6 +48,7 @@ import (
 ```
 Untuk menjalankan API maka:
 ```
+$ chmod 755 start.sh
 $ ./start.sh
 ```
 
