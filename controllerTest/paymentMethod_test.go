@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"restfulAPI/config"
-	"restfulAPI/controller"
 	"restfulAPI/modelsTest"
 	"testing"
 
@@ -53,7 +52,7 @@ func TestDBGetPaymentController(t *testing.T) {
 	db.Delete(&modelsTest.Payment{}, "1=1")
 	m := modelsTest.NewGormPaymentModel(db)
 	// bikin controller
-	paymentController := controller.GetPaymentMethod(c)
+	paymentController := CreateGetPaymentController(m)
 	if err != nil {
 		t.Error(err)
 	}
