@@ -16,7 +16,7 @@ func Init_DB() {
 		"HTTP_PASSWORD": "123456",
 		"HTTP_PORT":     "3306",
 		"HTTP_HOST":     "127.0.0.1",
-		"HTTP_NAME":     "RestfulProject",
+		"HTTP_NAME":     "restful",
 	}
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
 		config["HTTP_USERNAME"],
